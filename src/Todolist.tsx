@@ -8,13 +8,15 @@ export type TaskType = {
 };
 
 type PropsType = {
-    title: string,
+    todolistId: string
+    title: string
     tasks: Array<TaskType>
     filter: FilterValueType
-    removeTask: (id: string) => void
-    changeTaskStatus: (taskId: string, isChecked: boolean) => void
-    addTask: (title: string) => void
-    changeFilter: (value: FilterValueType) => void
+    removeTask: (todolistId: string, taskId: string) => void
+    changeTaskStatus: (todolistId: string, taskId: string, isChecked: boolean) => void
+    addTask: (todolistId: string, title: string) => void
+    changeFilter: (todolistId: string, value: FilterValueType) => void
+    removeTodo: (todolistId: string) => void
 };
 
 export function Todolist(props: PropsType) {
@@ -28,12 +30,12 @@ export function Todolist(props: PropsType) {
     const todoListItems: JSX.Element[] = props.tasks.map(item => {
 
         const removeTaskHandler = () => {
-            props.removeTask(item.id)
+            props.removeTask(props.todolistId, item.id);
         };
 
         const changeTaskStatusHandler =  (e: ChangeEvent<HTMLInputElement>)=> {
             error && setError(false);
-            props.changeTaskStatus(item.id, e.currentTarget.checked);
+            props.changeTaskStatus(props.todolistId, item.id, e.currentTarget.checked);
         }
 
         return (
@@ -50,12 +52,16 @@ export function Todolist(props: PropsType) {
         const trimmedTitle = title.trim();
 
         if(trimmedTitle) {
-            props.addTask(trimmedTitle);
+            props.addTask(props.todolistId, trimmedTitle);
         } else {
             setError(true);
         }
         setTitle('');
 
+    }
+
+    const removeTodoHandler =() => {
+        props.removeTodo(props.todolistId);
     }
     const setLocalTitleHandler = (e: ChangeEvent<HTMLInputElement>) =>  setTitle(e.currentTarget.value);
     const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => isAddTaskPossible ? undefined : e.key === 'Enter' && addTaskHandler();
@@ -65,7 +71,7 @@ export function Todolist(props: PropsType) {
 
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>{props.title} <button onClick={removeTodoHandler}>Del</button></h3>
             <div>
                 <input placeholder={'Write task'} value={title} onChange={setLocalTitleHandler}
                        onKeyDown={onKeyDownAddTaskHandler} className={error ? 'input-error' : ''}/>
@@ -78,13 +84,13 @@ export function Todolist(props: PropsType) {
                 {todoListItems}
             </ul>
 
-            <button onClick={() => props.changeFilter('all')}
+            <button onClick={() => props.changeFilter(props.todolistId, 'all')}
                     className={props.filter === 'all' ? 'btn-active' : ''}>All
             </button>
-            <button onClick={() => props.changeFilter('active')}
+            <button onClick={() => props.changeFilter(props.todolistId,'active')}
                     className={props.filter === 'active' ? 'btn-active' : ''}>Active
             </button>
-            <button onClick={() => props.changeFilter('completed')}
+            <button onClick={() => props.changeFilter(props.todolistId,'completed')}
                     className={props.filter === 'completed' ? 'btn-active' : ''}>Completed
             </button>
         </div>
