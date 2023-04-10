@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
+import AddItemForm from "./AddItemForm";
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -48,6 +49,15 @@ function App() {
 
     }
 
+    const updateTask = (todolistId: string, taskId: string,  title: string) => {
+        const newTask = {...tasks, [todolistId]: tasks[todolistId].map(item => taskId === item.id ? item.title = title : item)};
+    }
+
+    const updateTodolist = (todolistId: string, title: string) => {
+            setTodolists(todolists.map(item => item.id === todolistId ? {...item, title:title} : item))
+    }
+
+
     const changeTaskStatus = (todolistId: string, taskId: string, isChecked: boolean) => {
 
         setTasks({...tasks, [todolistId]: tasks[todolistId].map(item => item.id === taskId ? {...item, isDone: isChecked} : item)})
@@ -86,20 +96,38 @@ function App() {
 
     }
 
+    const addTodolist = (newTitle: string) => {
+        const newId = v1();
+        const newTodolist: TodolistsType = {id: newId, title: newTitle, filter: 'all'};
+        setTodolists([...todolists, newTodolist]);
+        setTasks({...tasks, [newId]: [{id: v1(), title: 'CSS', isDone: true}]})
+    }
+
+
+
+
     return (
         <div className={'App'}>
+
+            <AddItemForm callBack={addTodolist} />
+
             {todolists.map(item => {
                 return (
-                    <Todolist key={item.id}
-                              todolistId={item.id}
-                              title={item.title}
-                              tasks={getFilteredTasksForRender(tasks[item.id], item.filter)}
-                              filter={item.filter}
-                              changeTaskStatus={changeTaskStatus}
-                              addTask={addTask}
-                              removeTask={removeTask}
-                              changeFilter={changeFilter}
-                              removeTodo={removeTodo}/>
+                    <div>
+
+                        <Todolist key={item.id}
+                                  todolistId={item.id}
+                                  title={item.title}
+                                  tasks={getFilteredTasksForRender(tasks[item.id], item.filter)}
+                                  filter={item.filter}
+                                  changeTaskStatus={changeTaskStatus}
+                                  addTask={addTask}
+                                  removeTask={removeTask}
+                                  changeFilter={changeFilter}
+                                  removeTodo={removeTodo}
+                                  updateTask={updateTask}
+                                  updateTodolist={updateTodolist}/>
+                    </div>
                 );
             })}
         </div>
