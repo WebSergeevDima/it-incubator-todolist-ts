@@ -2,6 +2,7 @@ import React, {ChangeEvent, useState, KeyboardEvent} from "react";
 import {FilterValueType} from "./App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
+import {Button} from "@mui/material";
 
 export type TaskType = {
     id: string,
@@ -71,7 +72,7 @@ export function Todolist(props: PropsType) {
         <div>
             <h3>
                 <EditableSpan title={props.title} callBack={(newTitle) => updateTodolistHandler(newTitle)}/>
-                <button onClick={removeTodoHandler}>Del</button>
+                <Button variant="contained" onClick={removeTodoHandler}>Del</Button>
             </h3>
 
             <AddItemForm callBack={addTaskHandler}/>
