@@ -93,10 +93,10 @@ function App() {
     const addTodolist = (newTitle: string) => {
         const newId = v1();
         const newTodolist: TodolistsType = {id: newId, title: newTitle, filter: 'all'};
+
         setTodolists([...todolists, newTodolist]);
 
         //setTasks({...tasks, [newId]: [{id: v1(), title: 'CSS', isDone: true}]})
-        addTask(newId, 'New title');
     }
 
 
@@ -155,9 +155,9 @@ function App() {
 
                     {todolists.map(item => {
                         return (
-                            <Grid xs={4}>
+                            <Grid xs={4} key={item.id}>
                                 <Paper elevation={3} style={{padding: '20px'}}>
-                                    <Todolist key={item.id}
+                                    <Todolist
                                               todolistId={item.id}
                                               title={item.title}
                                               tasks={getFilteredTasksForRender(tasks[item.id], item.filter)}
