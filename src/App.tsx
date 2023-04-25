@@ -11,7 +11,7 @@ import {addTaskAC, changeTaskAC, removeTaskAC, TaskReducer} from "./resucers/tas
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
-type TodolistsType = {
+export type TodolistsType = {
     id: string
     title: string
     filter: FilterValueType
@@ -31,22 +31,7 @@ function App() {
         {id: todolistD2, title: 'Name 2', filter: 'all'}
     ]);
 
-    // let [tasks, setTasks] = useState<TasksType>({
-    //     [todolistD1]: [
-    //         {id: v1(), title: 'CSS', isDone: true},
-    //         {id: v1(), title: 'JS', isDone: true},
-    //         {id: v1(), title: 'React', isDone: false},
-    //         {id: v1(), title: 'React', isDone: false}
-    //     ],
-    //     [todolistD2]: [
-    //         {id: v1(), title: 'CSS', isDone: true},
-    //         {id: v1(), title: 'JS', isDone: true},
-    //         {id: v1(), title: 'React', isDone: false},
-    //         {id: v1(), title: 'React', isDone: false}
-    //     ]
-    // });
-
-    let [tasks, tasksDispatch] = useReducer(TaskReducer, {
+    let [tasks, setTasks] = useState<TasksType>({
         [todolistD1]: [
             {id: v1(), title: 'CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
@@ -61,32 +46,46 @@ function App() {
         ]
     });
 
+    // let [tasks, tasksDispatch] = useReducer(TaskReducer, {
+    //     [todolistD1]: [
+    //         {id: v1(), title: 'CSS', isDone: true},
+    //         {id: v1(), title: 'JS', isDone: true},
+    //         {id: v1(), title: 'React', isDone: false},
+    //         {id: v1(), title: 'React', isDone: false}
+    //     ],
+    //     [todolistD2]: [
+    //         {id: v1(), title: 'CSS', isDone: true},
+    //         {id: v1(), title: 'JS', isDone: true},
+    //         {id: v1(), title: 'React', isDone: false},
+    //         {id: v1(), title: 'React', isDone: false}
+    //     ]
+    // });
+
     const addTask = (todolistId: string, title: string) => {
 
-        tasksDispatch(addTaskAC(todolistId, title));
+        //tasksDispatch(addTaskAC(todolistId, title));
 
-        // const newTask = {id: v1(), title: title, isDone: true}
-        //
-        // setTasks({...tasks, [todolistId]: [...tasks[todolistId], newTask]})
+        const newTask = {id: v1(), title: title, isDone: true}
+
+        setTasks({...tasks, [todolistId]: [...tasks[todolistId], newTask]})
 
     }
 
     const removeTask = (todolistId: string, taskId: string) => {
 
-        tasksDispatch(removeTaskAC(todolistId, taskId));
+        //tasksDispatch(removeTaskAC(todolistId, taskId));
 
-        //setTasks({...tasks, [todolistId]: tasks[todolistId].filter(item => item.id !== taskId)})
+        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(item => item.id !== taskId)})
 
     }
 
     const changeTaskStatus = (todolistId: string, taskId: string, isChecked: boolean) => {
+        //TaskReducer(tasks, changeTaskAC(todolistId, taskId, isChecked));
 
-        changeTaskAC(todolistId, taskId, isChecked);
-
-        // setTasks({
-        //     ...tasks,
-        //     [todolistId]: tasks[todolistId].map(item => item.id === taskId ? {...item, isDone: isChecked} : item)
-        // })
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(item => item.id === taskId ? {...item, isDone: isChecked} : item)
+        })
 
     }
 
@@ -94,9 +93,9 @@ function App() {
         const newId = v1();
         const newTodolist: TodolistsType = {id: newId, title: newTitle, filter: 'all'};
 
-        setTodolists([...todolists, newTodolist]);
+        setTodolists([...todolists, newTodolist]); //DEBUG
 
-        //setTasks({...tasks, [newId]: [{id: v1(), title: 'CSS', isDone: true}]})
+        setTasks({...tasks, [newId]: [{id: v1(), title: 'CSS', isDone: true}]})
     }
 
 

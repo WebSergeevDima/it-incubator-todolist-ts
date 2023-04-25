@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Checkbox from '@mui/material/Checkbox';
+import SuperCheckbox from "./Components/SuperCheckbox";
 
 export type TaskType = {
     id: string,
@@ -31,25 +32,27 @@ export function Todolist(props: PropsType) {
 
     let [error, setError] = useState<boolean>(false);
 
+    const changeTaskStatusHandler = (id: string, isChecked: boolean) => {
+        console.log(id, props.todolistId, isChecked)
+        error && setError(false);
+        props.changeTaskStatus(props.todolistId, id, isChecked);
+    }
+
     const todoListItems: JSX.Element[] = props.tasks.map(item => {
 
         const removeTaskHandler = () => {
             props.removeTask(props.todolistId, item.id);
         };
 
-        const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            error && setError(false);
-            props.changeTaskStatus(props.todolistId, item.id, e.currentTarget.checked);
-        }
-
         const updateTaskHandler = (todolistId: string, newTitle: string) => {
             props.updateTask(todolistId, item.id, newTitle);
         }
 
-
         return (
             <li>
-                <Checkbox checked={item.isDone} onChange={changeTaskStatusHandler} />
+                {/*<Checkbox checked={item.isDone} onChange={changeTaskStatusHandler} />*/}
+                <SuperCheckbox callback={(isChecked)=>changeTaskStatusHandler(item.id, isChecked)} isDone={item.isDone}/>
+
                 <span className={item.isDone ? 'task task-done' : 'task'}>
                     <EditableSpan title={item.title} callBack={(newTitle) => updateTaskHandler(item.id, newTitle)}/>
                 </span>
