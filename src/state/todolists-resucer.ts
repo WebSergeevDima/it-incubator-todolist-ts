@@ -38,8 +38,8 @@ type TsarTypeAction = RemoveTodolistACType
     | ChangeTodolistACType
     | ChangeFilterACType;
 
-type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
-type AddTodolistACType = ReturnType<typeof addTodolistAC>;
+export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
 type ChangeTodolistACType = ReturnType<typeof changeTodolistAC>;
 type ChangeFilterACType = ReturnType<typeof changeFilterAC>;
 
@@ -57,7 +57,8 @@ export const addTodolistAC = (title: string) => {
     return {
         type: ADD_TODOLIST,
         payload: {
-            title
+            title,
+            todolistId: v1()
         }
     } as const
 }
