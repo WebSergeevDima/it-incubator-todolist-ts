@@ -2,15 +2,17 @@ import {addTaskAC, changeStatusTaskAC, changeTitleTaskAC, removeTaskAC, tasksRed
 import {TasksType} from "../App";
 import {addTodolistAC, removeTodolistAC} from "./todolists-resucer";
 
-test('Correct REMOVE task', () => {
+let startState: TasksType;
 
-    const startState:TasksType = {
+beforeEach(() => {
+
+    startState = {
         "todolistId1": [
             {
                 id: '1', title: 'Title', isDone: false
             },
             {
-                id: '2', title: 'Title', isDone: false
+                id: '2', title: 'Title TEST', isDone: false
             },
             {
                 id: '3', title: 'Title', isDone: false
@@ -29,7 +31,11 @@ test('Correct REMOVE task', () => {
         ]
     }
 
-    const action = removeTaskAC("todolistId2","2");
+});
+
+test('Correct REMOVE task', () => {
+
+    const action = removeTaskAC("todolistId2", "2");
 
     const endState = tasksReducer(startState, action);
 
@@ -39,7 +45,7 @@ test('Correct REMOVE task', () => {
                 id: '1', title: 'Title', isDone: false
             },
             {
-                id: '2', title: 'Title', isDone: false
+                id: '2', title: 'Title TEST', isDone: false
             },
             {
                 id: '3', title: 'Title', isDone: false
@@ -57,34 +63,7 @@ test('Correct REMOVE task', () => {
 })
 
 
-
-
 test('Correct ADD task', () => {
-
-    const startState:TasksType = {
-        "todolistId1": [
-            {
-                id: '1', title: 'Title', isDone: false
-            },
-            {
-                id: '2', title: 'Title', isDone: false
-            },
-            {
-                id: '3', title: 'Title', isDone: false
-            }
-        ],
-        "todolistId2": [
-            {
-                id: '1', title: 'bread', isDone: true
-            },
-            {
-                id: '2', title: 'Title 2', isDone: true
-            },
-            {
-                id: '3', title: 'Title 2', isDone: true
-            }
-        ]
-    }
 
     const action = addTaskAC("todolistId2", "juce");
 
@@ -99,72 +78,19 @@ test('Correct ADD task', () => {
 })
 
 
-
 test('Correct CHANGE STATUS task', () => {
-
-    const startState:TasksType = {
-        "todolistId1": [
-            {
-                id: '1', title: 'Title', isDone: false
-            },
-            {
-                id: '2', title: 'Title', isDone: true
-            },
-            {
-                id: '3', title: 'Title', isDone: false
-            }
-        ],
-        "todolistId2": [
-            {
-                id: '1', title: 'bread', isDone: true
-            },
-            {
-                id: '2', title: 'Title 2', isDone: true
-            },
-            {
-                id: '3', title: 'Title 2', isDone: true
-            }
-        ]
-    }
 
     const action = changeStatusTaskAC("todolistId2", "2", false);
 
     const endState = tasksReducer(startState, action);
 
-    expect(endState['todolistId1'][1].isDone).toBe(true);
+    expect(endState['todolistId1'][1].isDone).toBe(false);
     expect(endState['todolistId2'][1].isDone).toBe(false);
 
 })
 
 
-
-
 test('Correct CHANGE TITLE task', () => {
-
-    const startState:TasksType = {
-        "todolistId1": [
-            {
-                id: '1', title: 'Title', isDone: false
-            },
-            {
-                id: '2', title: 'Title TEST', isDone: true
-            },
-            {
-                id: '3', title: 'Title', isDone: false
-            }
-        ],
-        "todolistId2": [
-            {
-                id: '1', title: 'bread', isDone: true
-            },
-            {
-                id: '2', title: 'Title 2', isDone: true
-            },
-            {
-                id: '3', title: 'Title 2', isDone: true
-            }
-        ]
-    }
 
     const action = changeTitleTaskAC("todolistId2", "2", 'JS');
 
@@ -176,33 +102,7 @@ test('Correct CHANGE TITLE task', () => {
 })
 
 
-
 test('Correct ADD ARRAY TODOLIST task', () => {
-
-    const startState:TasksType = {
-        "todolistId1": [
-            {
-                id: '1', title: 'Title', isDone: false
-            },
-            {
-                id: '2', title: 'Title TEST', isDone: true
-            },
-            {
-                id: '3', title: 'Title', isDone: false
-            }
-        ],
-        "todolistId2": [
-            {
-                id: '1', title: 'bread', isDone: true
-            },
-            {
-                id: '2', title: 'Title 2', isDone: true
-            },
-            {
-                id: '3', title: 'Title 2', isDone: true
-            }
-        ]
-    }
 
     const action = addTodolistAC("New todolist");
 
@@ -212,7 +112,7 @@ test('Correct ADD ARRAY TODOLIST task', () => {
 
     const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2');
 
-    if(!newKey) {
+    if (!newKey) {
         throw Error('New key should be added');
     }
 
@@ -222,33 +122,7 @@ test('Correct ADD ARRAY TODOLIST task', () => {
 })
 
 
-
 test('Correct REMOVE TODOLIST', () => {
-
-    const startState:TasksType = {
-        "todolistId1": [
-            {
-                id: '1', title: 'Title', isDone: false
-            },
-            {
-                id: '2', title: 'Title TEST', isDone: true
-            },
-            {
-                id: '3', title: 'Title', isDone: false
-            }
-        ],
-        "todolistId2": [
-            {
-                id: '1', title: 'bread', isDone: true
-            },
-            {
-                id: '2', title: 'Title 2', isDone: true
-            },
-            {
-                id: '3', title: 'Title 2', isDone: true
-            }
-        ]
-    }
 
     const action = removeTodolistAC("todolistId2");
 
