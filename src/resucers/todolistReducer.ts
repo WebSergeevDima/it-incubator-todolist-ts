@@ -6,8 +6,7 @@ const ADD_TODOLIST = 'ADD-TODOLIST';
 const UPDATE_TODOLIST = 'UPDATE-TODOLIST';
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER';
 
-export const todolistsReducer = (state: TodolistsType[], action: TodolistTypeAction): TodolistsType[] => {
-
+export const todolistReducer = (state: TodolistsType[], action: TsarTypeAction): TodolistsType[] => {
     switch (action.type) {
         case REMOVE_TODOLIST: {
             return state.filter(item => {
@@ -15,8 +14,12 @@ export const todolistsReducer = (state: TodolistsType[], action: TodolistTypeAct
             });
         }
         case ADD_TODOLIST: {
-            const newTodolist: TodolistsType = {id: action.payload.todolistId, title: action.payload.title, filter: 'all'};
-            console.log('TODOLIST ID: ', action.payload.todolistId);
+
+            const id = v1();
+            const newTodolist: TodolistsType = {id: id, title: action.payload.title, filter: 'all'};
+
+            console.log('3) newTodolist: ', newTodolist);
+
             return [...state, newTodolist];
         }
         case UPDATE_TODOLIST: {
@@ -32,13 +35,13 @@ export const todolistsReducer = (state: TodolistsType[], action: TodolistTypeAct
 };
 
 
- export type TodolistTypeAction = RemoveTodolistACType
+type TsarTypeAction = RemoveTodolistACType
     | AddTodolistACType
     | ChangeTodolistACType
     | ChangeFilterACType;
 
-type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
-type AddTodolistACType = ReturnType<typeof addTodolistAC>;
+export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
 type ChangeTodolistACType = ReturnType<typeof changeTodolistAC>;
 type ChangeFilterACType = ReturnType<typeof changeFilterAC>;
 
@@ -51,12 +54,15 @@ export const removeTodolistAC = (id: string) => {
     } as const
 }
 
+
 export const addTodolistAC = (title: string) => {
+
+    console.log('2) title: ', title);
     return {
         type: ADD_TODOLIST,
         payload: {
-            todolistId: v1(),
-            title
+            title,
+            todolistId: v1()
         }
     } as const
 }
@@ -80,3 +86,5 @@ export const changeFilterAC = (id: string, filter: FilterValueType) => {
         }
     } as const
 }
+
+export default todolistReducer;

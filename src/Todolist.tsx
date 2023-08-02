@@ -33,12 +33,11 @@ export function Todolist(props: PropsType) {
     let [error, setError] = useState<boolean>(false);
 
     const changeTaskStatusHandler = (id: string, isChecked: boolean) => {
-        console.log(id, props.todolistId, isChecked)
         error && setError(false);
         props.changeTaskStatus(props.todolistId, id, isChecked);
     }
 
-    const todoListItems: JSX.Element[] = props.tasks.map(item => {
+    const todoListItems: JSX.Element[] = props.tasks?.map(item => {
 
         const removeTaskHandler = () => {
             props.removeTask(props.todolistId, item.id);
@@ -88,7 +87,7 @@ export function Todolist(props: PropsType) {
             <AddItemForm callBack={addTaskHandler}/>
 
             <ul>
-                {todoListItems}
+                {todoListItems ?? null}
             </ul>
             <Button variant={props.filter === 'all' ? 'contained' : 'outlined'} color="success" onClick={() => props.changeFilter(props.todolistId, 'all')}>
                 All

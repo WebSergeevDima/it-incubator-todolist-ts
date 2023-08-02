@@ -1,7 +1,7 @@
 import React from 'react';
 import {TasksType} from "../App";
 import {v1} from "uuid";
-import {AddTodolistACType, RemoveTodolistACType} from "./todolists-resucer";
+import {TodolistTypeAction} from "./todolists-resucer";
 
 type RemoveTaskActionType = ReturnType<typeof removeTaskAC>;
 type AddTaskActionType = ReturnType<typeof addTaskAC>;
@@ -12,8 +12,7 @@ type ActionsType = RemoveTaskActionType
     | AddTaskActionType
     | ChangeStatusTaskActionType
     | ChangeTitleTaskActionType
-    | AddTodolistACType
-    | RemoveTodolistACType;
+    | TodolistTypeAction;
 
 export const tasksReducer = (state: TasksType, action: ActionsType) => {
 
@@ -21,27 +20,30 @@ export const tasksReducer = (state: TasksType, action: ActionsType) => {
         case 'REMOVE-TASK':
             return {
                 ...state,
-                [action.todolistId]: state[action.todolistId].filter(item => {
-                    return item.id !== action.taskId
-                })
+                [action.payload.todolistId]: state[action.payload.todolistId]
+                    .filter(item => {
+                        return item.id !== action.payload.taskId;
+                    })
             };
         case 'ADD-TASK':
-            const newTodolist = {
+            const newTask = {
                 id: v1(),
-                title: action.title,
+                title: action.payload.title,
                 isDone: false
             };
             return {
                 ...state,
-                [action.todolistId]: [newTodolist, ...state[action.todolistId]]
+                [action.payload.todolistId]: state[action.payload.todolistId]?.length ? [...state[action.payload.todolistId], newTask]: [newTask]
             };
         case 'CHANGE-STATUS-TASK':
+            console.log('action!!: ', action);
             return {
                 ...state,
-                [action.todolistId]: state[action.todolistId].map(item => item.id === action.taskId ? {
-                    ...item,
-                    isDone: action.status
-                } : item)
+                [action.payload.todolistId]: state[action.payload.todolistId]
+                    .map(item => item.id === action.payload.taskId ? {
+                        ...item,
+                        isDone: action.payload.status
+                    } : item)
             };
         case 'CHANGE-TITLE-TASK':
             return {
@@ -51,17 +53,9 @@ export const tasksReducer = (state: TasksType, action: ActionsType) => {
                     title: action.title
                 } : item)
             };
-        case 'ADD-TODOLIST':
-            return {
-                ...state,
-                [v1()]: []
-            };
-        case 'REMOVE-TODOLIST':
-            let copyState = {...state};
-            delete copyState[action.payload.id];
-            return copyState;
         default:
-            throw new Error('Not action in tasks reducer!');
+            return state;
+            //throw new Error('Not action in tasks reducer!');
     }
 
 }
@@ -69,25 +63,31 @@ export const tasksReducer = (state: TasksType, action: ActionsType) => {
 export const removeTaskAC = (todolistId: string, taskId: string) => {
     return {
         type: 'REMOVE-TASK',
-        todolistId,
-        taskId
+        payload: {
+            todolistId,
+            taskId
+        }
     } as const;
 }
 
 export const addTaskAC = (todolistId: string, title: string) => {
     return {
         type: 'ADD-TASK',
-        todolistId,
-        title
+        payload: {
+            todolistId,
+            title
+        }
     } as const;
 }
 
 export const changeStatusTaskAC = (todolistId: string, taskId: string, status: boolean) => {
     return {
         type: 'CHANGE-STATUS-TASK',
-        todolistId,
-        taskId,
-        status
+        payload: {
+            todolistId,
+            taskId,
+            status
+        }
     } as const;
 }
 
