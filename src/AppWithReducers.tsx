@@ -136,7 +136,7 @@ function App() {
         let action = addTodolistAC(newTitle);
 
         dispatchToTodolists(action);
-        dispatchToTasks(action);
+       //dispatchToTasks(action); //WHY????
     }
 
     const updateTodolist = (todolistId: string, title: string) => {
