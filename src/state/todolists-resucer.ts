@@ -1,4 +1,4 @@
-import {FilterValueType, TodolistsType} from "../App";
+import {FilterValueType, TasksType, TodolistsType} from "../App";
 import {v1} from "uuid";
 
 const REMOVE_TODOLIST = 'REMOVE-TODOLIST';
@@ -6,7 +6,9 @@ const ADD_TODOLIST = 'ADD-TODOLIST';
 const UPDATE_TODOLIST = 'UPDATE-TODOLIST';
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER';
 
-export const todolistsReducer = (state: TodolistsType[], action: TodolistTypeAction): TodolistsType[] => {
+const initialState: Array<TodolistsType> = [];
+
+export const todolistsReducer = (state = initialState, action: TodolistTypeAction): TodolistsType[] => {
 
     switch (action.type) {
         case REMOVE_TODOLIST: {

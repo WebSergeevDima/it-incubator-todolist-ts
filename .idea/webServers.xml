@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="13268683-52b0-445e-971b-84e380da80db" name="AOTBM TEST">
+        <fileTransfer accessType="SFTP" host="10.2.0.95" port="22" sshConfigId="eefe94ae-8f45-4e53-94e8-571588f8a69b" sshConfig="surnov_d@10.2.0.95:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import AppWithReducer from './AppWithReducers';
+import AppWithRedux from "./AppWithRedux";
+import {Provider} from "react-redux";
+import {store} from './state/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-root.render(<AppWithReducer />);
+root.render(<Provider store={store}><AppWithRedux /></Provider>);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
